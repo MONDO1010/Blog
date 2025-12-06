@@ -7,10 +7,12 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\TagController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Shop\CartController;
+use App\Http\Controllers\Shop\CheckoutController;
 
 // Public Routes
 Route::get('/', [MotoController::class, 'home'])->name('home');
@@ -25,6 +27,15 @@ Route::post('/panier/ajouter/{product}', [CartController::class, 'add'])->name('
 Route::put('/panier/modifier/{cart}', [CartController::class, 'updateQuantity'])->name('cart.update');
 Route::delete('/panier/retirer/{cart}', [CartController::class, 'remove'])->name('cart.remove');
 Route::delete('/panier/vider', [CartController::class, 'clear'])->name('cart.clear');
+
+// Shop Routes
+Route::get('/boutique', [MotoController::class, 'index'])->name('shop.index');
+
+// Checkout Routes
+Route::get('/commander', [CheckoutController::class, 'index'])->name('checkout.index');
+Route::post('/commander/paiement', [CheckoutController::class, 'payment'])->name('checkout.payment');
+Route::post('/commander/process', [CheckoutController::class, 'processPayment'])->name('checkout.process');
+Route::get('/commander/confirmation/{order}', [CheckoutController::class, 'confirmation'])->name('checkout.confirmation');
 
 // Authentication Routes
 Route::middleware('guest')->group(function () {
@@ -52,6 +63,12 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     // Users Management
     Route::get('users', [UserController::class, 'index'])->name('users.index');
     Route::post('users/{user}/toggle-admin', [UserController::class, 'toggleAdmin'])->name('users.toggle-admin');
+
+    // Orders Management
+    Route::get('orders', [OrderController::class, 'index'])->name('orders.index');
+    Route::get('orders/{order}', [OrderController::class, 'show'])->name('orders.show');
+    Route::patch('orders/{order}/status', [OrderController::class, 'updateStatus'])->name('orders.update-status');
+    Route::patch('orders/{order}/payment', [OrderController::class, 'updatePaymentStatus'])->name('orders.update-payment');
 });
 
 

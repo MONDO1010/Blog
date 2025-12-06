@@ -134,24 +134,18 @@
                         <h5 class="neu-product-price mb-0">{{ number_format($total, 0, ',', ' ') }} FCFA</h5>
                     </div>
 
-                    @auth
-                        <button class="neu-btn-accent neu-btn btn-block py-3 mb-3">
-                            <i class="fas fa-credit-card"></i> Passer la commande
-                        </button>
-                    @else
+                    <a href="{{ route('checkout.index') }}" class="neu-btn-primary neu-btn btn-block py-3 mb-3">
+                        <i class="fas fa-credit-card"></i> Passer la commande
+                    </a>
+
+                    @guest
                         <div class="neu-card-sm mb-3 text-center">
                             <small class="text-muted">
                                 <i class="fas fa-info-circle text-gradient"></i>
-                                Connectez-vous pour passer commande
+                                <a href="{{ route('login') }}" class="text-gradient">Connectez-vous</a> pour retrouver votre panier plus tard
                             </small>
                         </div>
-                        <a href="{{ route('login') }}" class="neu-btn-primary neu-btn btn-block mb-2">
-                            <i class="fas fa-sign-in-alt"></i> Se connecter
-                        </a>
-                        <a href="{{ route('register') }}" class="neu-btn btn-block">
-                            <i class="fas fa-user-plus"></i> S'inscrire
-                        </a>
-                    @endauth
+                    @endguest
 
                     <hr style="border-color: var(--shadow-dark); opacity: 0.2;">
 

@@ -65,6 +65,19 @@
                     </a>
                 </div>
 
+                <div class="admin-nav-divider"></div>
+                <div class="admin-nav-label">Ventes</div>
+
+                <div class="admin-nav-item">
+                    <a href="{{ route('admin.orders.index') }}" class="admin-nav-link {{ request()->routeIs('admin.orders.*') ? 'active' : '' }}">
+                        <i class="fas fa-shopping-bag"></i>
+                        <span>Commandes</span>
+                    </a>
+                </div>
+
+                <div class="admin-nav-divider"></div>
+                <div class="admin-nav-label">Système</div>
+
                 <div class="admin-nav-item">
                     <a href="{{ route('admin.users.index') }}" class="admin-nav-link {{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
                         <i class="fas fa-users"></i>

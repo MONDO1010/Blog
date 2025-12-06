@@ -24,11 +24,8 @@ class MotoController extends Controller
     }
 
     public function index() {
-        // SELECT * FROM produits:
-         $produits = Produit::with('category')->get();
-         //dd($produits);
-         //$categories = Category::where('is_online', 1)->get();
-        return view('Shop.index', compact('produits', ));
+        $produits = Produit::with('category')->get();
+        return view('shop.index', compact('produits'));
     }
 
     public function produit(Request $request, $id)
