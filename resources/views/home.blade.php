@@ -1,32 +1,8 @@
-<!doctype html>
-<html lang="fr">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="Ets Modeste - Votre partenaire pour l'achat de motos de qualité">
-    <meta name="author" content="Ets Modeste">
-    <link rel="icon" href="{{asset('img/favicon.png')}}">
+@extends('layouts.master')
 
-    <title>Accueil - Ets Modeste</title>
+@section('title', 'Accueil - Ets Modeste')
 
-    <!-- Bootstrap core CSS -->
-    <link href="{{asset('css/bootstrap.min.css')}}" rel="stylesheet">
-
-    <!-- Neumorphism CSS -->
-    <link href="{{asset('css/neumorphism.css')}}" rel="stylesheet">
-
-    <!-- Custom styles -->
-    <link href="{{asset('css/tshirt.css')}}" rel="stylesheet">
-    <script defer src="https://use.fontawesome.com/releases/v5.0.9/js/all.js"></script>
-
-</head>
-
-<body>
-
-@include('layouts.header')
-
-    <main role="main">
-
+@section('content')
     <!-- Hero Section Neumorphic -->
     <section class="neu-hero">
         <div class="container">
@@ -44,7 +20,7 @@
                     </div>
                 </div>
                 <div class="col-lg-6 text-center d-none d-lg-block">
-                    <i class="fas fa-motorcycle float-animation" style="font-size: 250px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;"></i>
+                    <i class="fas fa-motorcycle float-animation" style="font-size: 200px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;"></i>
                 </div>
             </div>
         </div>
@@ -82,11 +58,11 @@
                 <div class="col-md-3 mb-4">
                     <div class="neu-product-card position-relative">
                         <div style="position: relative; overflow: hidden;">
-                            <span class="neu-product-badge">{{ $produit->category->nom }}</span>
+                            <span class="neu-product-badge">{{ $produit->category->nom ?? 'Catégorie' }}</span>
                             <a href="{{ route('voir_produit', $produit->id) }}">
-                                <img src="{{ asset('storage/' . $produit->photo_principale) }}"
+                                <img src="{{ asset('storage/produits/' . $produit->photo_principale) }}"
                                      alt="{{ $produit->marque }}"
-                                     onerror="this.src='{{ asset('produits/'.$produit->photo_principale) }}'">
+                                     onerror="this.onerror=null; this.src='{{ asset('img/placeholder.svg') }}';">
                             </a>
                         </div>
                         <div class="card-body">
@@ -169,14 +145,4 @@
             </div>
         </div>
     </section>
-
-    </main>
-
-    @include('layouts.footer')
-
-    <!-- Bootstrap core JavaScript -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-    <script src="{{asset('js/popper.min.js')}}"></script>
-    <script src="{{asset('js/bootstrap.min.js')}}"></script>
-  </body>
-</html>
+@endsection

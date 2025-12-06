@@ -1,56 +1,73 @@
-@extends('home')
+@extends('layouts.master')
+
+@section('title', 'Tous les Produits - Ets Modeste')
+
 @section('content')
-<div class="row">
-    @forelse($produits as $produit)
-    <div class="col-md-4 col-lg-3">
-        <div class="product-card card h-100 position-relative">
-            <!-- Category Badge -->
-            <span class="product-badge badge badge-info">{{ $produit->category->nom }}</span>
+<section class="py-5">
+    <div class="container">
+        <h2 class="neu-section-title">Tous nos Produits</h2>
 
-            <!-- Product Image -->
-            <img class="card-img-top"
-                 src="{{ asset('storage/produits/'.$produit->photo_principale) }}"
-                 alt="{{ $produit->marque }} {{ $produit->type }}"
-                 onerror="this.src='{{ asset('produits/'.$produit->photo_principale) }}'">
+        <div class="row">
+            @forelse($produits as $produit)
+                <div class="col-md-4 col-lg-3 mb-4">
+                    <div class="neu-product-card position-relative">
+                        <div style="position: relative; overflow: hidden;">
+                            <span class="neu-product-badge">{{ $produit->category->nom }}</span>
+                            <a href="{{ route('voir_produit', $produit->id) }}">
+                                <img src="{{ asset('storage/produits/'.$produit->photo_principale) }}"
+                                     alt="{{ $produit->marque }} {{ $produit->type }}"
+                                     onerror="this.onerror=null; this.src='{{ asset('img/placeholder.svg') }}';">
+                            </a>
+                        </div>
 
-            <div class="card-body">
-                <!-- Product Title -->
-                <h5 class="product-title">{{ $produit->marque }}</h5>
-                <p class="text-muted mb-2"><small>{{ $produit->type }}</small></p>
+                        <div class="card-body">
+                            <h5 class="neu-product-title">{{ $produit->marque }}</h5>
+                            <p class="text-muted mb-2" style="font-size: 14px;">{{ $produit->type }}</p>
 
-                <!-- Product Description -->
-                <p class="product-description">{{ $produit->description }}</p>
+                            <!-- Tags -->
+                            <div class="mb-3">
+                                @foreach($produit->tags as $tag)
+                                    <span class="badge" style="background: var(--primary-gradient); color: white; font-size: 10px;">{{ $tag->nom }}</span>
+                                @endforeach
+                            </div>
 
-                <!-- Tags -->
-                <div class="mb-3">
-                    @foreach($produit->tags as $tag)
-                        <span class="badge badge-secondary badge-sm">{{ $tag->nom }}</span>
-                    @endforeach
+                            <!-- Price -->
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <span class="neu-product-price">{{ number_format($produit->prix, 0, ',', ' ') }} FCFA</span>
+                            </div>
+
+                            <!-- Stock Status -->
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <small class="text-muted">
+                                    <i class="fas fa-palette"></i> {{ $produit->couleur }}
+                                </small>
+                                @if($produit->stock > 0)
+                                    <small class="text-success">
+                                        <i class="fas fa-check-circle"></i> En stock
+                                    </small>
+                                @else
+                                    <small class="text-danger">
+                                        <i class="fas fa-times-circle"></i> Épuisé
+                                    </small>
+                                @endif
+                            </div>
+
+                            <a href="{{ route('voir_produit', $produit->id) }}" class="neu-btn-primary neu-btn btn-block">
+                                <i class="fas fa-eye"></i> Voir Détails
+                            </a>
+                        </div>
+                    </div>
                 </div>
-
-                <!-- Price and Action -->
-                <div class="d-flex justify-content-between align-items-center">
-                    <span class="product-price">{{ number_format($produit->prix, 0, ',', ' ') }} F</span>
-                    <a href="{{ route('voir_produit',['id'=>$produit->id]) }}" class="btn btn-view-product btn-sm">
-                        <i class="fas fa-eye"></i> Voir
-                    </a>
+            @empty
+                <div class="col-12">
+                    <div class="neu-card text-center py-5">
+                        <i class="fas fa-motorcycle text-muted" style="font-size: 60px; opacity: 0.3;"></i>
+                        <h4 class="mt-4 text-muted">Aucun produit disponible</h4>
+                        <p class="text-muted">Revenez bientôt pour découvrir nos nouveautés.</p>
+                    </div>
                 </div>
-
-                <!-- Stock Status -->
-                @if($produit->stock > 0)
-                    <small class="text-success mt-2 d-block"><i class="fas fa-check-circle"></i> En stock ({{ $produit->stock }})</small>
-                @else
-                    <small class="text-danger mt-2 d-block"><i class="fas fa-times-circle"></i> Rupture de stock</small>
-                @endif
-            </div>
+            @endforelse
         </div>
     </div>
-    @empty
-    <div class="col-12">
-        <div class="alert alert-info text-center">
-            <i class="fas fa-info-circle"></i> Aucun produit disponible pour le moment.
-        </div>
-    </div>
-    @endforelse
-</div>
-@endsection     
+</section>
+@endsection

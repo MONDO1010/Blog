@@ -3,204 +3,149 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Admin') - Zute Admin</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>@yield('title', 'Admin') - Ets Modeste</title>
+
+    <!-- Google Fonts - Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- Bootstrap 4 CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        .admin-sidebar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 100vh;
-            width: 250px;
-            background: #2c3e50;
-            padding-top: 20px;
-            z-index: 100;
-        }
-        .admin-sidebar .logo {
-            padding: 15px 20px;
-            color: #fff;
-            font-size: 20px;
-            font-weight: bold;
-            border-bottom: 1px solid #34495e;
-            margin-bottom: 10px;
-        }
-        .admin-sidebar .nav-link {
-            color: #ecf0f1;
-            padding: 12px 20px;
-            display: flex;
-            align-items: center;
-            transition: all 0.3s;
-        }
-        .admin-sidebar .nav-link i {
-            margin-right: 10px;
-            width: 20px;
-        }
-        .admin-sidebar .nav-link:hover,
-        .admin-sidebar .nav-link.active {
-            background: #34495e;
-            color: #fff;
-            text-decoration: none;
-        }
-        .admin-content {
-            margin-left: 250px;
-            min-height: 100vh;
-            background: #ecf0f1;
-        }
-        .admin-navbar {
-            background: #fff;
-            padding: 15px 30px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .page-header {
-            background: #fff;
-            padding: 20px 30px;
-            margin-bottom: 20px;
-            border-bottom: 2px solid #3498db;
-        }
-        .page-header h1 {
-            margin: 0;
-            font-size: 24px;
-            color: #2c3e50;
-        }
-        .content-wrapper {
-            padding: 20px 30px;
-        }
-        .stat-card {
-            background: #fff;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
-        }
-        .stat-card h3 {
-            margin: 0;
-            font-size: 32px;
-            color: #2c3e50;
-        }
-        .stat-card p {
-            margin: 5px 0 0 0;
-            color: #7f8c8d;
-            font-size: 14px;
-        }
-        .stat-card .icon {
-            font-size: 40px;
-            opacity: 0.3;
-        }
-    </style>
+    <!-- Admin Flat CSS -->
+    <link rel="stylesheet" href="{{ asset('css/admin-flat.css') }}">
 
     @yield('styles')
 </head>
-<body>
-    <!-- Sidebar -->
-    <div class="admin-sidebar">
-        <div class="logo">
-            <i class="fas fa-motorcycle"></i> Zute Admin
-        </div>
-
-        <nav class="nav flex-column">
-            <a href="{{ route('admin.dashboard') }}" class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
-                <i class="fas fa-tachometer-alt"></i>
-                <span>Dashboard</span>
-            </a>
-
-            <a href="{{ route('admin.products.index') }}" class="nav-link {{ request()->routeIs('admin.products.*') ? 'active' : '' }}">
-                <i class="fas fa-motorcycle"></i>
-                <span>Produits</span>
-            </a>
-
-            <a href="{{ route('admin.categories.index') }}" class="nav-link {{ request()->routeIs('admin.categories.*') ? 'active' : '' }}">
-                <i class="fas fa-folder"></i>
-                <span>Catégories</span>
-            </a>
-
-            <a href="{{ route('admin.tags.index') }}" class="nav-link {{ request()->routeIs('admin.tags.*') ? 'active' : '' }}">
-                <i class="fas fa-tags"></i>
-                <span>Tags</span>
-            </a>
-
-            <a href="{{ route('admin.users.index') }}" class="nav-link {{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
-                <i class="fas fa-users"></i>
-                <span>Utilisateurs</span>
-            </a>
-
-            <hr style="border-color: #34495e; margin: 10px 20px;">
-
-            <a href="{{ route('home') }}" class="nav-link">
-                <i class="fas fa-arrow-left"></i>
-                <span>Retour à la boutique</span>
-            </a>
-        </nav>
-    </div>
-
-    <!-- Main Content -->
-    <div class="admin-content">
-        <!-- Top Navbar -->
-        <div class="admin-navbar">
-            <div>
-                <span class="text-muted">Bienvenue, </span>
-                <strong>{{ auth()->user()->name }}</strong>
+<body class="admin-body">
+    <div class="admin-wrapper">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="admin-sidebar-header">
+                <a href="{{ route('admin.dashboard') }}" class="admin-logo">
+                    <i class="fas fa-store"></i>
+                    <span>Ets Modeste</span>
+                </a>
             </div>
-            <div>
-                <form method="POST" action="{{ route('logout') }}" class="d-inline">
-                    @csrf
-                    <button type="submit" class="btn btn-sm btn-outline-danger">
-                        <i class="fas fa-sign-out-alt"></i> Déconnexion
-                    </button>
-                </form>
-            </div>
-        </div>
 
-        <!-- Page Header -->
-        <div class="page-header">
-            <h1>@yield('page-title', 'Dashboard')</h1>
-        </div>
+            <nav class="admin-nav">
+                <div class="admin-nav-label">Principal</div>
 
-        <!-- Content -->
-        <div class="content-wrapper">
-            @if(session('success'))
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <i class="fas fa-check-circle"></i> {{ session('success') }}
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                <div class="admin-nav-item">
+                    <a href="{{ route('admin.dashboard') }}" class="admin-nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+                        <i class="fas fa-th-large"></i>
+                        <span>Dashboard</span>
+                    </a>
                 </div>
-            @endif
 
-            @if(session('error'))
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <i class="fas fa-exclamation-circle"></i> {{ session('error') }}
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                <div class="admin-nav-divider"></div>
+                <div class="admin-nav-label">Gestion</div>
+
+                <div class="admin-nav-item">
+                    <a href="{{ route('admin.products.index') }}" class="admin-nav-link {{ request()->routeIs('admin.products.*') ? 'active' : '' }}">
+                        <i class="fas fa-motorcycle"></i>
+                        <span>Produits</span>
+                    </a>
                 </div>
-            @endif
 
-            @if($errors->any())
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <strong>Erreurs de validation:</strong>
-                    <ul class="mb-0">
-                        @foreach($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                <div class="admin-nav-item">
+                    <a href="{{ route('admin.categories.index') }}" class="admin-nav-link {{ request()->routeIs('admin.categories.*') ? 'active' : '' }}">
+                        <i class="fas fa-folder-open"></i>
+                        <span>Catégories</span>
+                    </a>
                 </div>
-            @endif
 
-            @yield('content')
+                <div class="admin-nav-item">
+                    <a href="{{ route('admin.tags.index') }}" class="admin-nav-link {{ request()->routeIs('admin.tags.*') ? 'active' : '' }}">
+                        <i class="fas fa-tags"></i>
+                        <span>Tags</span>
+                    </a>
+                </div>
+
+                <div class="admin-nav-item">
+                    <a href="{{ route('admin.users.index') }}" class="admin-nav-link {{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
+                        <i class="fas fa-users"></i>
+                        <span>Utilisateurs</span>
+                    </a>
+                </div>
+
+                <div class="admin-nav-divider"></div>
+
+                <div class="admin-nav-item">
+                    <a href="{{ route('home') }}" class="admin-nav-link">
+                        <i class="fas fa-external-link-alt"></i>
+                        <span>Voir la boutique</span>
+                    </a>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="admin-content">
+            <!-- Header -->
+            <header class="admin-header">
+                <div class="admin-header-left">
+                    <h1>@yield('page-title', 'Dashboard')</h1>
+                    <p>@yield('page-description', 'Bienvenue dans votre espace d\'administration')</p>
+                </div>
+
+                <div class="admin-header-right">
+                    <div class="admin-user-info">
+                        <div class="admin-user-avatar">
+                            {{ strtoupper(substr(auth()->user()->name, 0, 2)) }}
+                        </div>
+                        <span class="admin-user-name">{{ auth()->user()->name }}</span>
+                    </div>
+
+                    <form method="POST" action="{{ route('logout') }}" class="d-inline">
+                        @csrf
+                        <button type="submit" class="flat-btn flat-btn-danger flat-btn-sm">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </button>
+                    </form>
+                </div>
+            </header>
+
+            <!-- Main Area -->
+            <main class="admin-main fade-in">
+                <!-- Alerts -->
+                @if(session('success'))
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <i class="fas fa-check-circle mr-2"></i> {{ session('success') }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                @endif
+
+                @if(session('error'))
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <i class="fas fa-exclamation-circle mr-2"></i> {{ session('error') }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                @endif
+
+                @if($errors->any())
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong><i class="fas fa-exclamation-triangle mr-2"></i>Erreurs de validation:</strong>
+                        <ul class="mb-0 mt-2">
+                            @foreach($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                @endif
+
+                @yield('content')
+            </main>
         </div>
     </div>
 

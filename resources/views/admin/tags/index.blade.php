@@ -1,72 +1,85 @@
 @extends('admin.layouts.app')
 
 @section('page-title', 'Gestion des Tags')
+@section('page-description', 'Étiquetez vos produits pour faciliter la recherche')
 
 @section('content')
-<div class="row mb-3">
-    <div class="col-md-12 text-right">
-        <button class="btn btn-success" data-toggle="modal" data-target="#createModal">
+<!-- Header Actions -->
+<div class="row mb-4">
+    <div class="col-12 text-right">
+        <button class="flat-btn flat-btn-success" data-toggle="modal" data-target="#createModal">
             <i class="fas fa-plus"></i> Nouveau Tag
         </button>
     </div>
 </div>
 
-<div class="card">
-    <div class="card-body">
+<!-- Tags Table -->
+<div class="flat-card">
+    <div class="flat-card-header">
+        <h5 class="flat-card-title">Liste des tags</h5>
+        <span class="flat-badge flat-badge-info">{{ $tags->count() }} tags</span>
+    </div>
+    <div class="flat-card-body p-0">
         <div class="table-responsive">
-            <table class="table table-hover">
+            <table class="flat-table">
                 <thead>
                     <tr>
-                        <th>ID</th>
+                        <th style="width: 60px;">#</th>
                         <th>Nom</th>
-                        <th>Nombre de Produits</th>
-                        <th>Actions</th>
+                        <th>Produits associés</th>
+                        <th style="width: 120px;">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse($tags as $tag)
                         <tr>
-                            <td>{{ $tag->id }}</td>
-                            <td><strong>{{ $tag->nom }}</strong></td>
+                            <td class="text-muted">{{ $tag->id }}</td>
                             <td>
-                                <span class="badge badge-primary">{{ $tag->produits_count }} produit(s)</span>
+                                <span class="flat-badge flat-badge-info" style="font-size: 13px;">
+                                    <i class="fas fa-tag mr-1"></i> {{ $tag->nom }}
+                                </span>
                             </td>
                             <td>
-                                <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#editModal{{ $tag->id }}">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <form action="{{ route('admin.tags.destroy', $tag) }}" method="POST" class="d-inline" onsubmit="return confirm('Êtes-vous sûr? Les produits associés ne seront pas supprimés.');">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-danger">
-                                        <i class="fas fa-trash"></i>
+                                <span class="text-muted">{{ $tag->produits_count }} produit(s)</span>
+                            </td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="flat-btn flat-btn-sm flat-btn-icon flat-btn-primary" data-toggle="modal" data-target="#editModal{{ $tag->id }}" title="Modifier">
+                                        <i class="fas fa-edit"></i>
                                     </button>
-                                </form>
+                                    <form action="{{ route('admin.tags.destroy', $tag) }}" method="POST" class="d-inline" onsubmit="return confirm('Supprimer ce tag? Les produits associés ne seront pas supprimés.');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="flat-btn flat-btn-sm flat-btn-icon flat-btn-danger" title="Supprimer">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
 
                         <!-- Edit Modal -->
                         <div class="modal fade" id="editModal{{ $tag->id }}" tabindex="-1">
                             <div class="modal-dialog">
-                                <div class="modal-content">
+                                <div class="modal-content" style="border-radius: var(--admin-radius); border: none;">
                                     <form action="{{ route('admin.tags.update', $tag) }}" method="POST">
                                         @csrf
                                         @method('PUT')
-                                        <div class="modal-header bg-primary text-white">
+                                        <div class="modal-header" style="background: var(--admin-primary); color: white; border-radius: var(--admin-radius) var(--admin-radius) 0 0;">
                                             <h5 class="modal-title">Modifier le Tag</h5>
                                             <button type="button" class="close text-white" data-dismiss="modal">
                                                 <span>&times;</span>
                                             </button>
                                         </div>
                                         <div class="modal-body">
-                                            <div class="form-group">
-                                                <label for="nom">Nom du tag <span class="text-danger">*</span></label>
-                                                <input type="text" class="form-control" name="nom" value="{{ $tag->nom }}" required>
+                                            <div class="mb-3">
+                                                <label class="flat-label">Nom du tag <span class="text-danger">*</span></label>
+                                                <input type="text" class="flat-input" name="nom" value="{{ $tag->nom }}" required>
                                             </div>
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-                                            <button type="submit" class="btn btn-primary">Mettre à jour</button>
+                                            <button type="button" class="flat-btn flat-btn-outline" data-dismiss="modal">Annuler</button>
+                                            <button type="submit" class="flat-btn flat-btn-primary">Mettre à jour</button>
                                         </div>
                                     </form>
                                 </div>
@@ -74,7 +87,16 @@
                         </div>
                     @empty
                         <tr>
-                            <td colspan="4" class="text-center text-muted">Aucun tag trouvé</td>
+                            <td colspan="4">
+                                <div class="empty-state">
+                                    <i class="fas fa-tags"></i>
+                                    <h4>Aucun tag</h4>
+                                    <p>Créez des tags pour mieux organiser vos produits</p>
+                                    <button class="flat-btn flat-btn-primary" data-toggle="modal" data-target="#createModal">
+                                        <i class="fas fa-plus"></i> Créer un tag
+                                    </button>
+                                </div>
+                            </td>
                         </tr>
                     @endforelse
                 </tbody>
@@ -86,24 +108,24 @@
 <!-- Create Modal -->
 <div class="modal fade" id="createModal" tabindex="-1">
     <div class="modal-dialog">
-        <div class="modal-content">
+        <div class="modal-content" style="border-radius: var(--admin-radius); border: none;">
             <form action="{{ route('admin.tags.store') }}" method="POST">
                 @csrf
-                <div class="modal-header bg-success text-white">
+                <div class="modal-header" style="background: var(--admin-success); color: white; border-radius: var(--admin-radius) var(--admin-radius) 0 0;">
                     <h5 class="modal-title">Nouveau Tag</h5>
                     <button type="button" class="close text-white" data-dismiss="modal">
                         <span>&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="form-group">
-                        <label for="nom">Nom du tag <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" name="nom" required>
+                    <div class="mb-3">
+                        <label class="flat-label">Nom du tag <span class="text-danger">*</span></label>
+                        <input type="text" class="flat-input" name="nom" placeholder="Ex: Sportive, Économique..." required>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-                    <button type="submit" class="btn btn-success">Créer</button>
+                    <button type="button" class="flat-btn flat-btn-outline" data-dismiss="modal">Annuler</button>
+                    <button type="submit" class="flat-btn flat-btn-success">Créer</button>
                 </div>
             </form>
         </div>

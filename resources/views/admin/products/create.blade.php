@@ -1,71 +1,73 @@
 @extends('admin.layouts.app')
 
 @section('page-title', 'Nouveau Produit')
+@section('page-description', 'Ajouter un nouveau produit au catalogue')
 
 @section('content')
 <div class="row">
-    <div class="col-md-8 offset-md-2">
-        <div class="card">
-            <div class="card-header bg-success text-white">
-                <h5 class="mb-0"><i class="fas fa-plus"></i> Ajouter un Nouveau Produit</h5>
+    <div class="col-lg-8">
+        <div class="flat-card">
+            <div class="flat-card-header">
+                <h5 class="flat-card-title">
+                    <i class="fas fa-plus mr-2 text-success"></i> Informations du Produit
+                </h5>
             </div>
-            <div class="card-body">
+            <div class="flat-card-body">
                 <form action="{{ route('admin.products.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
 
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label for="marque">Marque <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control @error('marque') is-invalid @enderror"
-                                   id="marque" name="marque" value="{{ old('marque') }}" required>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="flat-label">Marque <span class="text-danger">*</span></label>
+                            <input type="text" class="flat-input @error('marque') is-invalid @enderror"
+                                   name="marque" value="{{ old('marque') }}" placeholder="Ex: Honda" required>
                             @error('marque')
-                                <div class="invalid-feedback">{{ $message }}</div>
+                                <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
 
-                        <div class="form-group col-md-6">
-                            <label for="type">Type <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control @error('type') is-invalid @enderror"
-                                   id="type" name="type" value="{{ old('type') }}" required>
+                        <div class="col-md-6 mb-3">
+                            <label class="flat-label">Type <span class="text-danger">*</span></label>
+                            <input type="text" class="flat-input @error('type') is-invalid @enderror"
+                                   name="type" value="{{ old('type') }}" placeholder="Ex: CBR 600RR" required>
                             @error('type')
-                                <div class="invalid-feedback">{{ $message }}</div>
+                                <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
                     </div>
 
-                    <div class="form-row">
-                        <div class="form-group col-md-4">
-                            <label for="couleur">Couleur <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control @error('couleur') is-invalid @enderror"
-                                   id="couleur" name="couleur" value="{{ old('couleur') }}" required>
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label class="flat-label">Couleur <span class="text-danger">*</span></label>
+                            <input type="text" class="flat-input @error('couleur') is-invalid @enderror"
+                                   name="couleur" value="{{ old('couleur') }}" placeholder="Ex: Rouge" required>
                             @error('couleur')
-                                <div class="invalid-feedback">{{ $message }}</div>
+                                <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
 
-                        <div class="form-group col-md-4">
-                            <label for="prix">Prix (FCFA) <span class="text-danger">*</span></label>
-                            <input type="number" class="form-control @error('prix') is-invalid @enderror"
-                                   id="prix" name="prix" value="{{ old('prix') }}" min="0" step="0.01" required>
+                        <div class="col-md-4 mb-3">
+                            <label class="flat-label">Prix (FCFA) <span class="text-danger">*</span></label>
+                            <input type="number" class="flat-input @error('prix') is-invalid @enderror"
+                                   name="prix" value="{{ old('prix') }}" min="0" step="1" placeholder="Ex: 500000" required>
                             @error('prix')
-                                <div class="invalid-feedback">{{ $message }}</div>
+                                <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
 
-                        <div class="form-group col-md-4">
-                            <label for="stock">Stock <span class="text-danger">*</span></label>
-                            <input type="number" class="form-control @error('stock') is-invalid @enderror"
-                                   id="stock" name="stock" value="{{ old('stock') }}" min="0" required>
+                        <div class="col-md-4 mb-3">
+                            <label class="flat-label">Stock <span class="text-danger">*</span></label>
+                            <input type="number" class="flat-input @error('stock') is-invalid @enderror"
+                                   name="stock" value="{{ old('stock') }}" min="0" placeholder="Ex: 10" required>
                             @error('stock')
-                                <div class="invalid-feedback">{{ $message }}</div>
+                                <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="category_id">Catégorie <span class="text-danger">*</span></label>
-                        <select class="form-control @error('category_id') is-invalid @enderror"
-                                id="category_id" name="category_id" required>
+                    <div class="mb-3">
+                        <label class="flat-label">Catégorie <span class="text-danger">*</span></label>
+                        <select class="flat-select @error('category_id') is-invalid @enderror" name="category_id" required>
                             <option value="">Sélectionnez une catégorie</option>
                             @foreach($categories as $category)
                                 <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
@@ -74,60 +76,74 @@
                             @endforeach
                         </select>
                         @error('category_id')
-                            <div class="invalid-feedback">{{ $message }}</div>
+                            <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
 
-                    <div class="form-group">
-                        <label for="tags">Tags</label>
-                        <select class="form-control @error('tags') is-invalid @enderror"
-                                id="tags" name="tags[]" multiple size="5">
+                    <div class="mb-3">
+                        <label class="flat-label">Tags</label>
+                        <select class="flat-select @error('tags') is-invalid @enderror" name="tags[]" multiple size="4">
                             @foreach($tags as $tag)
                                 <option value="{{ $tag->id }}" {{ in_array($tag->id, old('tags', [])) ? 'selected' : '' }}>
                                     {{ $tag->nom }}
                                 </option>
                             @endforeach
                         </select>
-                        <small class="form-text text-muted">Maintenez Ctrl (ou Cmd) pour sélectionner plusieurs tags</small>
+                        <small class="text-muted">Maintenez Ctrl pour sélectionner plusieurs tags</small>
                         @error('tags')
-                            <div class="invalid-feedback">{{ $message }}</div>
+                            <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
 
-                    <div class="form-group">
-                        <label for="description">Description <span class="text-danger">*</span></label>
-                        <textarea class="form-control @error('description') is-invalid @enderror"
-                                  id="description" name="description" rows="4" required>{{ old('description') }}</textarea>
+                    <div class="mb-3">
+                        <label class="flat-label">Description <span class="text-danger">*</span></label>
+                        <textarea class="flat-input @error('description') is-invalid @enderror"
+                                  name="description" rows="4" placeholder="Description détaillée du produit..." required>{{ old('description') }}</textarea>
                         @error('description')
-                            <div class="invalid-feedback">{{ $message }}</div>
+                            <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
 
-                    <div class="form-group">
-                        <label for="photo_principale">Photo Principale <span class="text-danger">*</span></label>
-                        <input type="file" class="form-control-file @error('photo_principale') is-invalid @enderror"
+                    <div class="mb-4">
+                        <label class="flat-label">Photo Principale <span class="text-danger">*</span></label>
+                        <input type="file" class="flat-input @error('photo_principale') is-invalid @enderror"
                                id="photo_principale" name="photo_principale" accept="image/*" required>
-                        <small class="form-text text-muted">Formats acceptés: JPEG, PNG, JPG (max 2MB)</small>
+                        <small class="text-muted">Formats: JPEG, PNG, JPG (max 2MB)</small>
                         @error('photo_principale')
-                            <div class="invalid-feedback">{{ $message }}</div>
+                            <small class="text-danger d-block">{{ $message }}</small>
                         @enderror
+                        <img id="preview" src="#" alt="Aperçu" style="max-width: 200px; display: none; margin-top: 12px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
                     </div>
 
-                    <div class="form-group">
-                        <img id="preview" src="#" alt="Aperçu" style="max-width: 200px; display: none; margin-top: 10px; border-radius: 5px;">
-                    </div>
-
-                    <hr>
-
-                    <div class="form-group mb-0">
-                        <button type="submit" class="btn btn-success">
+                    <div class="d-flex" style="gap: 12px;">
+                        <button type="submit" class="flat-btn flat-btn-success">
                             <i class="fas fa-save"></i> Créer le Produit
                         </button>
-                        <a href="{{ route('admin.products.index') }}" class="btn btn-secondary">
+                        <a href="{{ route('admin.products.index') }}" class="flat-btn flat-btn-outline">
                             <i class="fas fa-times"></i> Annuler
                         </a>
                     </div>
                 </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="flat-card">
+            <div class="flat-card-header">
+                <h5 class="flat-card-title">
+                    <i class="fas fa-info-circle mr-2 text-info"></i> Aide
+                </h5>
+            </div>
+            <div class="flat-card-body">
+                <p class="text-muted mb-3">Remplissez tous les champs obligatoires marqués d'un <span class="text-danger">*</span></p>
+
+                <h6 class="mb-2">Conseils</h6>
+                <ul class="text-muted" style="padding-left: 18px; font-size: 14px;">
+                    <li class="mb-2">Utilisez une image de qualité (min 600x400px)</li>
+                    <li class="mb-2">La description aide au référencement</li>
+                    <li class="mb-2">Les tags facilitent la recherche</li>
+                </ul>
             </div>
         </div>
     </div>
@@ -136,7 +152,6 @@
 
 @section('scripts')
 <script>
-    // Image preview
     document.getElementById('photo_principale').addEventListener('change', function(e) {
         const preview = document.getElementById('preview');
         const file = e.target.files[0];
