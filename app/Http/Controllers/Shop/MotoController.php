@@ -28,11 +28,11 @@ class MotoController extends Controller
     public function produit(Request $request, $id)
 {
     // Récupère le produit en fonction de l'ID passé dans l'URL
-    $produit = Produit::with(['Tags', 'category'])->findOrFail($id);
+    $produit = Produit::with(['tags', 'category'])->findOrFail($id);
    $categories = Category::where('is_online', 1)->get();
     // Retourne la vue avec le produit récupéré
     return view('shop.produit', compact('produit', 'categories'));
-    
+
 }
 public function viewByCategory($id)
 {
@@ -49,7 +49,8 @@ public function viewByCategory($id)
     public function viewByTag(Request $request){
         $Tag = Tag::find($request->id);
         $produits = $Tag->produits;
-        return view('shop.categorie',compact('produits'));
+        $categories = Category::where('is_online', 1)->get();
+        return view('shop.categorie',compact('produits', 'categories'));
     }
 
     // Méthode pour afficher un produit spécifique
