@@ -60,9 +60,9 @@
             </div>
 
             <div class="navbar-actions">
-                <a href="#" class="btn btn-cart">
+                <a href="{{ route('cart.index') }}" class="btn btn-cart">
                     <i class="fas fa-shopping-cart"></i>
-                    <span class="cart-badge">0</span>
+                    <span class="cart-badge">{{ \App\Models\Cart::where(auth()->check() ? 'user_id' : 'session_id', auth()->check() ? auth()->id() : session('cart_session_id'))->count() }}</span>
                 </a>
             </div>
         </div>

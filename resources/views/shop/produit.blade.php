@@ -91,9 +91,16 @@
 
                 <!-- Action Buttons -->
                 <div class="mt-4">
-                    <button class="btn btn-cart btn-lg btn-block py-3" {{ $produit->stock == 0 ? 'disabled' : '' }}>
-                        <i class="fas fa-shopping-cart"></i> Ajouter au Panier
-                    </button>
+                    <form action="{{ route('cart.add', $produit->id) }}" method="POST">
+                        @csrf
+                        <div class="form-group">
+                            <label for="quantity" class="font-weight-bold">Quantité:</label>
+                            <input type="number" name="quantity" id="quantity" class="form-control" value="1" min="1" max="{{ $produit->stock }}" {{ $produit->stock == 0 ? 'disabled' : '' }}>
+                        </div>
+                        <button type="submit" class="btn btn-cart btn-lg btn-block py-3" {{ $produit->stock == 0 ? 'disabled' : '' }}>
+                            <i class="fas fa-shopping-cart"></i> Ajouter au Panier
+                        </button>
+                    </form>
                     <small class="text-muted d-block mt-2 text-center">
                         <i class="fas fa-truck"></i> Livraison disponible | <i class="fas fa-shield-alt"></i> Paiement sécurisé
                     </small>
