@@ -1,21 +1,23 @@
 <!doctype html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
+    <meta name="description" content="Ets Modeste - Votre partenaire pour l'achat de motos de qualité">
+    <meta name="author" content="Ets Modeste">
     <link rel="icon" href="{{asset('img/favicon.png')}}">
 
-    <title>Ets Modeste</title>
+    <title>Accueil - Ets Modeste</title>
 
     <!-- Bootstrap core CSS -->
     <link href="{{asset('css/bootstrap.min.css')}}" rel="stylesheet">
 
-    <!-- Custom styles for this template -->
-    <link href="{{asset('css/album.css')}}" rel="stylesheet">
+    <!-- Neumorphism CSS -->
+    <link href="{{asset('css/neumorphism.css')}}" rel="stylesheet">
+
+    <!-- Custom styles -->
     <link href="{{asset('css/tshirt.css')}}" rel="stylesheet">
-    <script defer src="https://use.fontawesome.com/releases/v5.0.9/js/all.js" integrity="sha384-8iPTk2s/jMVj81dnzb/iFR2sdA7u06vHJyyLlAd4snFpCl/SnyUjRrbdJsw1pGIl" crossorigin="anonymous"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.9/js/all.js"></script>
 
 </head>
 
@@ -25,38 +27,43 @@
 
     <main role="main">
 
-    <!-- Hero Section -->
-    <section class="hero-section">
+    <!-- Hero Section Neumorphic -->
+    <section class="neu-hero">
         <div class="container">
             <div class="row align-items-center">
-                <div class="col-lg-6">
-                    <h1 class="hero-title">Trouvez Votre Moto Idéale</h1>
-                    <p class="hero-subtitle">Découvrez notre sélection exceptionnelle de motos neuves et d'occasion. Qualité garantie, prix compétitifs.</p>
-                    <a href="#produits" class="btn btn-hero">
-                        <i class="fas fa-motorcycle"></i> Voir nos Motos
-                    </a>
+                <div class="col-lg-6 neu-hero-content">
+                    <h1 class="mb-4">Trouvez Votre Moto Idéale</h1>
+                    <p>Découvrez notre sélection exceptionnelle de motos neuves et d'occasion. Qualité garantie, prix compétitifs et service client incomparable.</p>
+                    <div class="mt-4">
+                        <a href="#produits" class="neu-btn-primary neu-btn mr-3">
+                            <i class="fas fa-motorcycle"></i> Voir nos Motos
+                        </a>
+                        <a href="{{ route('cart.index') }}" class="neu-btn">
+                            <i class="fas fa-shopping-cart"></i> Mon Panier
+                        </a>
+                    </div>
                 </div>
-                <div class="col-lg-6 text-center">
-                    <i class="fas fa-motorcycle" style="font-size: 200px; opacity: 0.2;"></i>
+                <div class="col-lg-6 text-center d-none d-lg-block">
+                    <i class="fas fa-motorcycle float-animation" style="font-size: 250px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;"></i>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Categories Section -->
-    <section class="py-5 bg-light">
+    <!-- Categories Section Neumorphic -->
+    <section class="py-5">
         <div class="container">
-            <h2 class="section-title text-center">Nos Catégories</h2>
+            <h2 class="neu-section-title">Nos Catégories</h2>
             <div class="row">
                 @foreach($categories ?? [] as $category)
-                <div class="col-md-4">
+                <div class="col-md-4 mb-4">
                     <a href="{{ route('voir_produit_par_cat', $category->id) }}" class="text-decoration-none">
-                        <div class="category-card">
-                            <div class="card-body text-center py-5" style="background: linear-gradient(135deg, #075e7f 0%, #0a7ba0 100%);">
-                                <i class="fas fa-motorcycle" style="font-size: 60px; color: #ffc107;"></i>
-                                <h3 class="mt-3 text-white">{{ $category->nom }}</h3>
-                                <p class="text-white-50">Découvrez notre gamme</p>
+                        <div class="neu-category-card">
+                            <div class="neu-category-icon">
+                                <i class="fas fa-motorcycle"></i>
                             </div>
+                            <h3 class="neu-category-title">{{ $category->nom }}</h3>
+                            <p class="neu-category-count">Découvrez notre gamme</p>
                         </div>
                     </a>
                 </div>
@@ -65,63 +72,111 @@
         </div>
     </section>
 
-    <!-- Featured Products Section -->
+    <!-- Featured Products Section Neumorphic -->
     <section class="py-5" id="produits">
         <div class="container">
-            <h2 class="section-title">Produits en Vedette</h2>
+            <h2 class="neu-section-title">Produits en Vedette</h2>
 
-@yield('content')
+            <div class="row">
+                @foreach($produits ?? [] as $produit)
+                <div class="col-md-3 mb-4">
+                    <div class="neu-product-card position-relative">
+                        <div style="position: relative; overflow: hidden;">
+                            <span class="neu-product-badge">{{ $produit->category->nom }}</span>
+                            <a href="{{ route('voir_produit', $produit->id) }}">
+                                <img src="{{ asset('storage/' . $produit->photo_principale) }}"
+                                     alt="{{ $produit->marque }}"
+                                     onerror="this.src='{{ asset('produits/'.$produit->photo_principale) }}'">
+                            </a>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="neu-product-title">{{ $produit->marque }}</h5>
+                            <p class="text-muted mb-2" style="font-size: 14px;">{{ $produit->type }}</p>
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <span class="neu-product-price">{{ number_format($produit->prix, 0, ',', ' ') }} FCFA</span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted">
+                                    <i class="fas fa-palette"></i> {{ $produit->couleur }}
+                                </small>
+                                @if($produit->stock > 0)
+                                    <small class="text-success">
+                                        <i class="fas fa-check-circle"></i> En stock
+                                    </small>
+                                @else
+                                    <small class="text-danger">
+                                        <i class="fas fa-times-circle"></i> Épuisé
+                                    </small>
+                                @endif
+                            </div>
+                            <a href="{{ route('voir_produit', $produit->id) }}" class="neu-btn-primary neu-btn btn-block mt-3">
+                                <i class="fas fa-eye"></i> Voir Détails
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                @endforeach
+            </div>
 
         </div>
     </section>
 
-    <!-- Why Choose Us -->
-    <section class="py-5 bg-light">
+    <!-- Why Choose Us Neumorphic -->
+    <section class="py-5">
         <div class="container">
-            <h2 class="section-title text-center">Pourquoi Nous Choisir ?</h2>
+            <h2 class="neu-section-title">Pourquoi Nous Choisir ?</h2>
             <div class="row mt-5">
-                <div class="col-md-4 text-center mb-4">
-                    <div class="p-4">
-                        <i class="fas fa-shield-alt" style="font-size: 60px; color: #075e7f;"></i>
-                        <h4 class="mt-3">Qualité Garantie</h4>
-                        <p class="text-muted">Toutes nos motos sont vérifiées et certifiées pour votre sécurité.</p>
+                <div class="col-md-4 mb-4">
+                    <div class="neu-card text-center">
+                        <div class="neu-category-icon mx-auto mb-3">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h4 class="font-weight-bold mb-3">Qualité Garantie</h4>
+                        <p class="text-muted">Toutes nos motos sont vérifiées et certifiées pour votre sécurité. Garantie constructeur disponible.</p>
                     </div>
                 </div>
-                <div class="col-md-4 text-center mb-4">
-                    <div class="p-4">
-                        <i class="fas fa-tags" style="font-size: 60px; color: #fd6060;"></i>
-                        <h4 class="mt-3">Prix Compétitifs</h4>
-                        <p class="text-muted">Les meilleurs prix du marché avec des facilités de paiement.</p>
+                <div class="col-md-4 mb-4">
+                    <div class="neu-card text-center">
+                        <div class="neu-category-icon mx-auto mb-3" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                            <i class="fas fa-tags"></i>
+                        </div>
+                        <h4 class="font-weight-bold mb-3">Prix Compétitifs</h4>
+                        <p class="text-muted">Les meilleurs prix du marché avec des facilités de paiement adaptées à vos besoins.</p>
                     </div>
                 </div>
-                <div class="col-md-4 text-center mb-4">
-                    <div class="p-4">
-                        <i class="fas fa-headset" style="font-size: 60px; color: #ffc107;"></i>
-                        <h4 class="mt-3">Service Client</h4>
-                        <p class="text-muted">Une équipe dédiée pour vous accompagner dans votre choix.</p>
+                <div class="col-md-4 mb-4">
+                    <div class="neu-card text-center">
+                        <div class="neu-category-icon mx-auto mb-3" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                            <i class="fas fa-headset"></i>
+                        </div>
+                        <h4 class="font-weight-bold mb-3">Service Client</h4>
+                        <p class="text-muted">Une équipe dédiée disponible 7j/7 pour vous accompagner dans votre choix et après l'achat.</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- CTA Section -->
+    <section class="py-5">
+        <div class="container">
+            <div class="neu-card text-center py-5">
+                <h2 class="text-gradient mb-4">Prêt à Trouver Votre Moto ?</h2>
+                <p class="text-muted mb-4" style="font-size: 18px;">Contactez-nous dès aujourd'hui pour découvrir nos offres exclusives</p>
+                <a href="#produits" class="neu-btn-accent neu-btn btn-lg">
+                    <i class="fas fa-phone"></i> Nous Contacter
+                </a>
+            </div>
+        </div>
+    </section>
+
     </main>
 
-    <footer class="text-muted">
-      <div class="container">
-        <p class="float-right">
-            <a href="#">Back to top</a>
-        </p>
-        <p>Ets Modeste</p>
-    </div>
-    </footer>
+    @include('layouts.footer')
 
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <!-- Bootstrap core JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
     <script src="{{asset('js/popper.min.js')}}"></script>
     <script src="{{asset('js/bootstrap.min.js')}}"></script>
-    <script src="{{asset('js/holder.min.js')}}"></script>
   </body>
 </html>
