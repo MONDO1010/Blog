@@ -10,4 +10,13 @@ class Category extends Model
     use HasFactory;
 
     protected $fillable = ['nom', 'is_online'];
+
+    protected $casts = [
+        'is_online' => 'boolean',
+    ];
+
+    public function produits()
+    {
+        return $this->hasMany(Produit::class, 'category_id');
+    }
 }

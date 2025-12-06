@@ -10,13 +10,19 @@ use App\Models\Tag;
 
 class MotoController extends Controller
 {
-    public function bienvenu() {
-        // SELECT * FROM produits:
-         //$produits = Produit::with('category')->get();
-         //dd($produits);
-         //$categories = Category::where('is_online', 1)->get();
-        return view('layouts.bienvenu');
+    public function home() {
+        // Get online categories for display
+        $categories = Category::where('is_online', 1)->get();
+
+        // Get featured/recent products
+        $produits = Produit::with(['category', 'tags'])
+            ->latest()
+            ->take(8)
+            ->get();
+
+        return view('home', compact('categories', 'produits'));
     }
+
     public function index() {
         // SELECT * FROM produits:
          $produits = Produit::with('category')->get();

@@ -1,50 +1,98 @@
-<header>
-    <div class="collapse bg-dark" id="navbarHeader">
+<header class="main-header">
+    <!-- Top Bar with Search and User Info -->
+    <div class="top-bar bg-dark py-2">
         <div class="container">
-            <div class="row">
-                <div class="col-sm-8 col-md-7 py-4">
-                    <h4 class="text-white">About</h4>
-                    <p class="text-white">Add some information about the album below, the author, or any other background context. Make it a few sentences long so folks can pick up some informative tidbits. Then, link them off to some social networking sites or contact information.</p>
+            <div class="row align-items-center">
+                <div class="col-md-4">
+                    <div class="top-bar-left">
+                        <span class="text-white-50"><i class="fas fa-phone"></i> +237 XXX XXX XXX</span>
+                    </div>
                 </div>
-                <div class="col-sm-4 offset-md-1 py-4">
-                    <h4 class="text-white">Contact</h4>
-                    <ul class="list-unstyled">
-                        <li><a href="#" class="text-white">Follow on Twitter</a></li>
-                        <li><a href="#" class="text-white">Like on Facebook</a></li>
-                        <li><a href="#" class="text-white">Email me</a></li>
-                    </ul>
+                <div class="col-md-8 text-right">
+                    <div class="top-bar-right">
+                        @auth
+                            <span class="text-white mr-3"><i class="fas fa-user"></i> {{ auth()->user()->name }}</span>
+                            @if(auth()->user()->is_admin)
+                                <a class="btn btn-sm btn-warning mr-2" href="{{ route('admin.dashboard') }}">
+                                    <i class="fas fa-tachometer-alt"></i> Admin
+                                </a>
+                            @endif
+                            <form method="POST" action="{{ route('logout') }}" class="d-inline">
+                                @csrf
+                                <button type="submit" class="btn btn-sm btn-outline-light">
+                                    <i class="fas fa-sign-out-alt"></i> Déconnexion
+                                </button>
+                            </form>
+                        @else
+                            <a class="btn btn-sm btn-outline-light mr-2" href="{{ route('login') }}">
+                                <i class="fas fa-sign-in-alt"></i> Connexion
+                            </a>
+                            <a class="btn btn-sm btn-light" href="{{ route('register') }}">
+                                <i class="fas fa-user-plus"></i> Inscription
+                            </a>
+                        @endauth
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="navbar navbar-dark bg-dark box-shadow">
-        <div class="container d-flex justify-content-between">
-            <a href="{{route('home')}}" class="navbar-brand d-flex align-items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+
+    <!-- Main Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark main-navbar">
+        <div class="container">
+            <a href="{{route('home')}}" class="navbar-brand">
+                <i class="fas fa-motorcycle mr-2"></i>
                 <strong>Ets Modeste</strong>
             </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
+
+            <!-- Search Bar -->
+            <div class="search-bar mx-auto d-none d-lg-flex">
+                <form action="#" method="GET" class="form-inline">
+                    <div class="input-group">
+                        <input type="text" name="q" class="form-control search-input" placeholder="Rechercher des motos..." aria-label="Search">
+                        <div class="input-group-append">
+                            <button class="btn btn-search" type="submit">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="navbar-actions">
+                <a href="#" class="btn btn-cart">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-badge">0</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Category Navigation -->
+    <nav class="navbar navbar-expand-lg category-navbar">
+        <div class="container">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#categoryNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="fa fa-shopping-cart"></i> Panier</a>
-                </li>
-            </ul>
+            <div class="collapse navbar-collapse justify-content-center" id="categoryNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}" href="{{route('home')}}">
+                            <i class="fas fa-home"></i> Accueil
+                        </a>
+                    </li>
+                    @foreach($categories as $Category)
+                        <li class="nav-item">
+                            <a class="nav-link {{ request('id') == $Category->id ? 'active' : '' }}"
+                               href="{{route('voir_produit_par_cat', ['id' => $Category->id])}}">
+                                {{$Category->nom}}
+                            </a>
+                        </li>
+                    @endforeach
+                </ul>
+            </div>
         </div>
-    </div>
-    <nav class="navbar navbar-light bg-red">
-    <a class="navbar-brand" href="#"></a>
-    <div class="navbar-nav d-flex justify-content-center w-100 flex-row">
-        @foreach($categories as $Category)
-            <li class="nav-item mx-3"> <!-- Ajout de mx-3 pour la marge horizontale -->
-                <a class="nav-link" 
-                href="{{route('voir_produit_par_cat', ['id' => $Category->id])}}">{{$Category->nom}}
-                </a>
-            </li>
-        @endforeach
-    </div>
-</nav>
+    </nav>
 
 
 

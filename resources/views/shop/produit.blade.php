@@ -3,127 +3,101 @@
 @section('content')
 
 <main role="main">
-    <div class="container">
+    <div class="container mt-4">
 
-        <div class="row justify-content-between">
-            <div class="col-6">
-                <div class="card mb-4 box-shadow">
+        <!-- Breadcrumbs -->
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ route('home') }}"><i class="fas fa-home"></i> Accueil</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('voir_produit_par_cat', $produit->category->id) }}">{{ $produit->category->nom }}</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{ $produit->marque }} {{ $produit->type }}</li>
+            </ol>
+        </nav>
+
+        <!-- Product Details -->
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="card border-0 shadow-sm">
                     <img class="card-img-top"
-                         src="{{ asset('produits/'.$produit->photo_principale) }}"
-                         alt="Photo du produit"
-                         style="width: 330px; height: 310px; object-fit: cover;">
+                         src="{{ asset('storage/produits/'.$produit->photo_principale) }}"
+                         alt="{{ $produit->marque }} {{ $produit->type }}"
+                         onerror="this.src='{{ asset('produits/'.$produit->photo_principale) }}'"
+                         style="width: 100%; height: 450px; object-fit: cover; border-radius: 10px;">
                 </div>
             </div>
 
-            <div class="col-6">
-                <h1 class="jumbotron-heading">
-                    {{ $produit->marque }} <br> {{ $produit->type }}
-                </h1>
+            <div class="col-lg-6">
+                <!-- Product Header -->
+                <div class="mb-3">
+                    <span class="badge badge-info mb-2">{{ $produit->category->nom }}</span>
+                    <h1 class="h2 font-weight-bold">{{ $produit->marque }}</h1>
+                    <h4 class="text-muted">{{ $produit->type }}</h4>
+                </div>
 
-                <h5>{{ number_format($produit->prix, 0, ',', ' ') }} F</h5>
+                <!-- Price -->
+                <div class="mb-4">
+                    <h2 class="product-price mb-0">{{ number_format($produit->prix, 0, ',', ' ') }} FCFA</h2>
+                    @if($produit->stock > 0)
+                        <small class="text-success"><i class="fas fa-check-circle"></i> En stock ({{ $produit->stock }} disponibles)</small>
+                    @else
+                        <small class="text-danger"><i class="fas fa-times-circle"></i> Rupture de stock</small>
+                    @endif
+                </div>
 
-                <p class="lead text-muted">
-                    {{ $produit->description }}
-                </p>
+                <!-- Description -->
+                <div class="mb-4">
+                    <h5 class="font-weight-bold">Description</h5>
+                    <p class="text-muted">{{ $produit->description }}</p>
+                </div>
 
                 <hr>
 
-                @foreach($produit->tags as $tag)
-                    <span class="badge badge-info">
-                        <a class="text-white"
-                           href="{{ route('voir_produit_par_tag', ['id' => $tag->id]) }}">
+                <!-- Specifications -->
+                <div class="mb-4">
+                    <h5 class="font-weight-bold mb-3">Caractéristiques</h5>
+                    <table class="table table-borderless">
+                        <tr>
+                            <td class="font-weight-bold" style="width: 150px;">Marque:</td>
+                            <td>{{ $produit->marque }}</td>
+                        </tr>
+                        <tr>
+                            <td class="font-weight-bold">Type:</td>
+                            <td>{{ $produit->type }}</td>
+                        </tr>
+                        <tr>
+                            <td class="font-weight-bold">Couleur:</td>
+                            <td>{{ $produit->couleur }}</td>
+                        </tr>
+                        <tr>
+                            <td class="font-weight-bold">Catégorie:</td>
+                            <td><a href="{{ route('voir_produit_par_cat', $produit->category->id) }}">{{ $produit->category->nom }}</a></td>
+                        </tr>
+                    </table>
+                </div>
+
+                <!-- Tags -->
+                @if($produit->tags->count() > 0)
+                <div class="mb-4">
+                    <h6 class="font-weight-bold mb-2">Tags:</h6>
+                    @foreach($produit->tags as $tag)
+                        <a href="{{ route('voir_produit_par_tag', ['id' => $tag->id]) }}" class="badge badge-secondary mr-1 mb-1" style="font-size: 14px;">
                             {{ $tag->nom }}
                         </a>
-                    </span>
-                @endforeach
+                    @endforeach
+                </div>
+                @endif
 
-                <label>Choisissez votre couleur</label>
-                <select class="form-control">
-                    <option>noir</option>
-                    <option>blanc</option>
-                    <option>bleue</option>
-                    <option>rouge</option>
-                    <option>cafe</option>
-                    <option>cendre</option>
-                    <option>vert</option>
-                </select>
+                <hr>
 
-                <p>
-                    <a href="#" class="btn btn-cart my-2 btn-block">
+                <!-- Action Buttons -->
+                <div class="mt-4">
+                    <button class="btn btn-cart btn-lg btn-block py-3" {{ $produit->stock == 0 ? 'disabled' : '' }}>
                         <i class="fas fa-shopping-cart"></i> Ajouter au Panier
-                    </a>
-                </p>
-            </div>
-        </div>
-
-        <div class="album py-5 bg-light">
-            <div class="container">
-
-                <div class="row">
-                    <h3>Vous aimerez aussi :</h3>
+                    </button>
+                    <small class="text-muted d-block mt-2 text-center">
+                        <i class="fas fa-truck"></i> Livraison disponible | <i class="fas fa-shield-alt"></i> Paiement sécurisé
+                    </small>
                 </div>
-
-                <div class="row">
-
-                    <div class="col-md-4">
-                        <div class="card mb-4 box-shadow">
-                            <img src="{{ asset('produits/motohomme.jpeg') }}"
-                                 class="card-img-top img-fluid"
-                                 style="width: 350px; height: 300px; object-fit: cover;">
-
-                            <div class="card-body">
-                                <div class="d-flex justify-content-end">
-                                    <div class="btn-group">
-                                        <a href="#" class="btn btn-sm btn-outline-secondary">
-                                            <i class="fas fa-eye"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <div class="card mb-4 box-shadow">
-                            <img src="{{ asset('produits/tricylcle.jpeg') }}"
-                                 class="card-img-top img-fluid"
-                                 style="width: 350px; height: 300px; object-fit: cover;">
-
-                            <div class="card-body">
-                                <div class="d-flex justify-content-end">
-                                    <div class="btn-group">
-                                        <a href="#" class="btn btn-sm btn-outline-secondary">
-                                            <i class="fas fa-eye"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <div class="card mb-4 box-shadow">
-                            <img src="{{ asset('produits/motohomme.jpeg') }}"
-                                 class="card-img-top img-fluid"
-                                 style="width: 350px; height: 300px; object-fit: cover;">
-
-                            <div class="card-body">
-                                <div class="d-flex justify-content-end">
-                                    <div class="btn-group">
-                                        <a href="#" class="btn btn-sm btn-outline-secondary">
-                                            <i class="fas fa-eye"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-
-                </div>
-
             </div>
         </div>
 

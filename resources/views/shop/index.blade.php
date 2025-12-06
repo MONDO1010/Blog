@@ -1,26 +1,56 @@
 @extends('home')
 @section('content')
-<div class="album py-5 bg-light">
-    <div class="container">
+<div class="row">
+    @forelse($produits as $produit)
+    <div class="col-md-4 col-lg-3">
+        <div class="product-card card h-100 position-relative">
+            <!-- Category Badge -->
+            <span class="product-badge badge badge-info">{{ $produit->category->nom }}</span>
 
-      <div class="row">
-            <!--{{dump($produits)}}-->
-             @foreach($produits as $produit)
-            <div class="col-md-4">
-              <div class="card mb-4 box-shadow">
-                <img class="card-img-top" src="{{ asset('produits/'.$produit->photo_principale) }}" alt="Card image cap" style="width: 209px; height: 220px; object-fit: cover;">
-                <div class="card-body">
-                  <p class="card-text">{{$produit->marque}} <br> {{$produit->type}} <br> {{$produit->description}} <br>
-                 <span class="badge badge-info"><a class="text-white" href="{{route('voir_produit_par_cat',['id'=>$produit->category->id])}}">{{ $produit->category->nom}}</a></span></p>
-                  <div class="d-flex justify-content-between align-items-center">
-                                <span class="price"> {{$produit->prix}} F</span>
-                                <a href="{{ route('voir_produit',['id'=>$produit->id]) }}" class="btn btn-sm btn-outline-secondary"><i class="fas fa-eye"></i></a>
-                   </div>
+            <!-- Product Image -->
+            <img class="card-img-top"
+                 src="{{ asset('storage/produits/'.$produit->photo_principale) }}"
+                 alt="{{ $produit->marque }} {{ $produit->type }}"
+                 onerror="this.src='{{ asset('produits/'.$produit->photo_principale) }}'">
+
+            <div class="card-body">
+                <!-- Product Title -->
+                <h5 class="product-title">{{ $produit->marque }}</h5>
+                <p class="text-muted mb-2"><small>{{ $produit->type }}</small></p>
+
+                <!-- Product Description -->
+                <p class="product-description">{{ $produit->description }}</p>
+
+                <!-- Tags -->
+                <div class="mb-3">
+                    @foreach($produit->tags as $tag)
+                        <span class="badge badge-secondary badge-sm">{{ $tag->nom }}</span>
+                    @endforeach
                 </div>
-              </div>
+
+                <!-- Price and Action -->
+                <div class="d-flex justify-content-between align-items-center">
+                    <span class="product-price">{{ number_format($produit->prix, 0, ',', ' ') }} F</span>
+                    <a href="{{ route('voir_produit',['id'=>$produit->id]) }}" class="btn btn-view-product btn-sm">
+                        <i class="fas fa-eye"></i> Voir
+                    </a>
+                </div>
+
+                <!-- Stock Status -->
+                @if($produit->stock > 0)
+                    <small class="text-success mt-2 d-block"><i class="fas fa-check-circle"></i> En stock ({{ $produit->stock }})</small>
+                @else
+                    <small class="text-danger mt-2 d-block"><i class="fas fa-times-circle"></i> Rupture de stock</small>
+                @endif
             </div>
-              @endforeach
         </div>
     </div>
+    @empty
+    <div class="col-12">
+        <div class="alert alert-info text-center">
+            <i class="fas fa-info-circle"></i> Aucun produit disponible pour le moment.
+        </div>
+    </div>
+    @endforelse
 </div>
- @endsection     
+@endsection     
