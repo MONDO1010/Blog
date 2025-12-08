@@ -154,9 +154,35 @@ chmod -R 775 bootstrap/cache
 
 ---
 
-## Étape 7 : Créer un administrateur
+## Étape 7 : Peupler la base de données
 
-### Option A : Avec Tinker (console Laravel)
+Le projet inclut des seeders pour créer des données initiales (utilisateurs, catégories, tags, produits).
+
+### Option A : Exécuter tous les seeders
+
+```bash
+php artisan db:seed
+```
+
+Cette commande exécute les seeders suivants :
+- `AdminSeeder` : Crée un administrateur et un utilisateur test
+- `CategoryTableSeeder` : Crée les catégories de produits
+- `TagTableSeeder` : Crée les tags
+- `ProduitsTableSeeder` : Crée des produits de démonstration
+
+### Option B : Migration + Seed en une commande
+
+```bash
+php artisan migrate --seed
+```
+
+### Option C : Réinitialiser et repeupler
+
+```bash
+php artisan migrate:fresh --seed
+```
+
+### Option D : Créer manuellement avec Tinker
 
 ```bash
 php artisan tinker
@@ -167,17 +193,11 @@ Puis :
 ```php
 $user = new App\Models\User();
 $user->name = 'Admin';
-$user->email = 'admin@etsmodeste.com';
+$user->email = 'admin@exemple.com';
 $user->password = bcrypt('motdepasse123');
 $user->is_admin = true;
 $user->save();
 exit
-```
-
-### Option B : Via le seeder (si configuré)
-
-```bash
-php artisan db:seed --class=AdminSeeder
 ```
 
 ---
@@ -284,11 +304,12 @@ ls -la public/storage  # Doit pointer vers storage/app/public
 
 ## Structure des identifiants par défaut
 
-Si tu utilises le seeder :
+Si tu utilises les seeders (`php artisan db:seed`), les comptes suivants sont créés :
 
-| Type | Email | Mot de passe |
-|------|-------|--------------|
-| Admin | admin@etsmodeste.com | password |
+| Type | Nom | Email | Mot de passe |
+|------|-----|-------|--------------|
+| Administrateur | Admin Zute | admin@zute.com | password |
+| Utilisateur | Utilisateur Test | user@zute.com | password |
 
 **Important :** Change ces identifiants en production !
 
