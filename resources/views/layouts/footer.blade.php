@@ -68,7 +68,7 @@
                 <h5 class="font-weight-bold mb-3">Contact</h5>
                 <ul class="list-unstyled">
                     <li class="mb-2 text-muted">
-                        <i class="fas fa-map-marker-alt text-gradient"></i> Yaoundé, Cameroun
+                        <i class="fas fa-map-marker-alt text-gradient"></i> Dapaong - TOGO
                     </li>
                     <li class="mb-2 text-muted">
                         <i class="fas fa-phone text-gradient"></i> 90 90 85 85
@@ -77,7 +77,7 @@
                         <i class="fas fa-envelope text-gradient"></i> etsmodeste@gmail.com
                     </li>
                     <li class="mb-2 text-muted">
-                        <i class="fas fa-clock text-gradient"></i> Lun - Sam: 8h - 18h
+                        <i class="fas fa-clock text-gradient"></i> 7H - 17H
                     </li>
                 </ul>
             </div>
