@@ -5,10 +5,10 @@
             <div class="d-flex justify-content-between align-items-center py-2">
                 <div class="top-bar-left">
                     <span class="text-muted small">
-                        <i class="fas fa-phone mr-1"></i> +237 XXX XXX XXX
+                        <i class="fas fa-phone mr-1"></i> 90 90 85 85
                     </span>
                     <span class="text-muted small ml-3">
-                        <i class="fas fa-envelope mr-1"></i> contact@etsmodeste.com
+                        <i class="fas fa-envelope mr-1"></i> etsmodeste@gmail.com
                     </span>
                 </div>
                 <div class="top-bar-right">

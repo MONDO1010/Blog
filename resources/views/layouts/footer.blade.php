@@ -71,10 +71,10 @@
                         <i class="fas fa-map-marker-alt text-gradient"></i> Yaoundé, Cameroun
                     </li>
                     <li class="mb-2 text-muted">
-                        <i class="fas fa-phone text-gradient"></i> +237 XXX XXX XXX
+                        <i class="fas fa-phone text-gradient"></i> 90 90 85 85
                     </li>
                     <li class="mb-2 text-muted">
-                        <i class="fas fa-envelope text-gradient"></i> contact@etsmodeste.com
+                        <i class="fas fa-envelope text-gradient"></i> etsmodeste@gmail.com
                     </li>
                     <li class="mb-2 text-muted">
                         <i class="fas fa-clock text-gradient"></i> Lun - Sam: 8h - 18h
